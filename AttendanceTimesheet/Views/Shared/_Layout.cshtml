@@ -1,0 +1,67 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+
+
+    <nav class="navbar navbar-expand-lg bg-white border-bottom-1 navigation py-0">
+        <a class="navbar-brand ml-2" href="#"><img src="~/Content/logo.png" class="logo "/></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        @{ 
+            string summaryTab = null ;
+            string detailsTab=null;
+            var currentTab = ViewContext.RouteData.Values["action"].ToString();
+            if (currentTab == "Summary")
+            { summaryTab = "activate"; }
+            if (currentTab == "Details")
+            { detailsTab = "activate"; }
+        }
+        <div class="collapse navbar-collapse ml-4" id="navbarColor01">
+            <ul class="navbar-nav mr-auto ">
+                <li class="nav-item   p-2" id="@summaryTab">
+                    @Html.ActionLink("Summary", "Summary", "Attendance", new {entries=DateTime.DaysInMonth(DateTime.Now.Year,DateTime.Now.Month)},new {@class="nav-link" })
+                </li>
+                <li class="nav-item  p-2" id="@detailsTab">
+                    @Html.ActionLink("Details", "Details", "Attendance", new { entries =DateTime.DaysInMonth(DateTime.Now.Year,DateTime.Now.Month) }, new { @class = "nav-link" })
+                </li>
+             
+            </ul>
+            
+        </div>
+    </nav>
+
+    <div class="row">
+
+
+        <div class="col-sm-12">
+
+            @RenderBody()
+
+        </div>
+
+
+
+
+    </div>
+
+    <hr />
+    <footer>
+        <p class="text-center">&copy; @DateTime.Now.Year - PIA IT Department</p>
+    </footer>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

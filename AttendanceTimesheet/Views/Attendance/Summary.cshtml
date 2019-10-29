@@ -1,0 +1,138 @@
+﻿@model AttendanceTimesheet.Models.SearchCustomerViewModel
+@{
+    ViewBag.Title = "Summary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="search" class="">
+    
+   
+        <div class="row">
+            <div class="col ">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Attendance Timesheet</h4>
+                        @using (Html.BeginForm("Summary", "Attendance", FormMethod.Get, new { @class = "form-inline row" }))
+                        {
+                            <div class="col-md ">
+                                <div class="form-group ">
+                                    @Html.LabelFor(m => m.SearchCriteria.entries)
+                                    @Html.DropDownListFor(m => m.SearchCriteria.entries, new SelectList(new List<int>() {  DateTime.DaysInMonth(DateTime.Now.Year,DateTime.Now.Month),15 }), null, new { @class = "form-control form-control-sm mx-1" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-9  d-flex justify-content-end">
+
+                                <div class="form-group mx-1">
+
+                                    @Html.LabelFor(m => m.SearchCriteria.month)
+                                    @Html.DropDownListFor(m=>m.SearchCriteria.month,new SelectList(new List<int>() {1,2,3,4,5,6,7,8,9,10,11,12}),"",new { @class = "form-control form-control-sm mx-1 " ,@style="width:3rem",@Value=DateTime.Now.Month})
+                                    
+
+                                </div>
+
+                                <div class="form-group mx-1 ">
+                                    @Html.LabelFor(m => m.SearchCriteria.year)
+                                    @Html.TextBoxFor(m => m.SearchCriteria.year, new { @class = "form-control form-control-sm mx-1 " ,@style="width:3rem" })
+                                </div>
+
+                                <div class="form-group mx-1">
+                                    @Html.LabelFor(m => m.SearchCriteria.prNo)
+                                    @Html.TextBoxFor(m => m.SearchCriteria.prNo, new { @class = "form-control form-control-sm mx-1 ",@style="width:5rem" })
+                                </div>
+                                <div class="form-group mx-1">
+                                    <button type="submit" class="btn btn-primary  ">Search</button>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="AttendanceTable" class="table table-striped ">
+                            <thead class="thead-dark sticky-top">
+                                <tr>
+                                    <th>Employee Number</th>
+                                    <th>Attendance Date</th>
+                                    <th>Time In</th>
+                                    <th>Time Out</th>
+
+                                    <th>Time In Machine Code</th>
+                                    <th>Time In Machine Name</th>
+                                    <th>Time Out Machine Code</th>
+                                    <th>Time Out Machine Name</th>
+                                    <th>Creation Date</th>
+                                    <th>V_num2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var record in Model.AttendanceRecords)
+                                {
+                                <tr>
+                                    <td>@record.PersonNR</td>
+                                    <td>@record.Logdate.ToString(string.Format("{0} {1}", "dddd", "dd/MM/yyyy"))</td>
+                                    <td>@(record.TimeIn?.ToString(string.Format("hh\\:mm")))</td>
+                                    <td>@(record.TimeOut?.ToString(string.Format("hh\\:mm")))</td>
+
+
+                                    <td>@record.TimeInMachineCode</td>
+                                    <td>@record.TimeInMachineName</td>
+                                    <td>@record.TimeOutMachineCode</td>
+                                    <td>@record.TimeOutMachineName</td>
+                                    <td>@record.Creation_date</td>
+                                    <td>@record.V_NUM2</td>
+                                </tr>
+                                }
+                            </tbody>
+
+
+
+                        </table>
+                    </div>
+                    @{ 
+                        if (!Model.SearchCriteria.pgNo.HasValue)
+                        { Model.SearchCriteria.pgNo = 1; }
+
+                        var totalentries = Model.totalCount;
+                        var shown = Model.SearchCriteria.entries * (Model.SearchCriteria.pgNo - 1) + Model.AttendanceRecords.Count();
+
+
+                    }
+                    <div class="card-footer m-0 p-2 text-sm-left text-center row align-items-center">
+                        <p class="my-sm-2 justify-content-sm-center col-sm">Showing @shown of @totalentries entries</p>
+                        <nav class=" col-sm d-flex justify-content-center justify-content-sm-end align-items-center">
+                            <ul class="pagination m-0 btn-group">
+                                <li class="page-item mx-1">
+                                    @if (Model.SearchCriteria.pgNo != 1)
+                                    {
+                                        @Html.ActionLink("Prev", "SummaryPrevPage", "Attendance",Model.SearchCriteria, new { @class = "btn btn-primary text-white"  })
+                                    }
+                                    else
+                                    {
+                                        <span class="btn-dark btn disabled ">Prev</span>
+                                    }
+                                </li>
+                                
+                                <li class="page-item ">
+                                    @if (shown != totalentries)
+                                    {
+                                        @Html.ActionLink("Next", "SummaryNextPage", "Attendance", Model.SearchCriteria, new { @class = "btn btn-primary text-white" })
+                                    }
+                                    else
+                                    {
+                                        <span class="btn-dark btn disabled ">Next</span>
+                                    }
+                                </li>
+                                
+
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    
+</section>
+

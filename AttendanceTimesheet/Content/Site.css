@@ -1,0 +1,53 @@
+﻿
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+ 
+}
+.activated{
+   
+    
+    background-color:cadetblue;
+    
+}
+.activated a{
+    color:white;
+}
+.activated::after,.activated::before{
+
+}
+.navigation{
+    border:none;
+    border-bottom:2px solid cadetBlue;
+}
+.logo{
+    width:50px;
+    transform:scale(1.5);
+}
+body{
+    overflow-x:hidden;
+}
+form-control-inline
+{
+    min-width:0;
+    width:auto;
+    display:inline;
+}
+table{
+    font-size:xx-small;
+    
+    word-wrap:break-word;
+}
+#AttendanceTable thead th{
+    vertical-align:middle;
+}
+
+.custom-active{
+    border-top-left-radius:5rem;
+    border-bottom-left-radius:5rem;
+}
+
+
+
